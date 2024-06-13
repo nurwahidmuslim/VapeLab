@@ -94,7 +94,6 @@ if (isset($_GET['delete_id'])) {
                         <img src="../<?php echo htmlspecialchars($product['gambar_url']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($product['nama']); ?>">
                         <div class="card-body">
                             <h5 class="card-title"><?php echo htmlspecialchars($product['nama']); ?></h5>
-                            <p class="card-text"><?php echo htmlspecialchars($product['deskripsi']); ?></p>
                             <p class="card-text">Rp <?php echo number_format($product['harga'], 0, ',', '.'); ?></p>
                             <a href="edit_produk.php?id=<?php echo $product['id']; ?>" class="btn btn-primary">Edit</a>
                             <a href="kelola_produk.php?delete_id=<?php echo $product['id']; ?>" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus produk ini?')">Hapus</a>

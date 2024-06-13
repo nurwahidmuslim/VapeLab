@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $kategori = $_POST['kategori'];
 
     // Upload file
-    $target_dir = "uploads/";
+    $target_dir = "../uploads/"; // Keluar dari folder saat ini dan masuk ke folder uploads
     $nama_acak = uniqid() . '_' . basename($_FILES["gambar"]["name"]); // Nama file acak
     $target_file = $target_dir . $nama_acak;
     $uploadOk = 1;
@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<script>alert('Maaf, file tidak berhasil diunggah.'); window.location.href='tambah_produk.php';</script>";
     } else {
         if (move_uploaded_file($_FILES["gambar"]["tmp_name"], $target_file)) {
-            $gambar_url = $target_file;
+            $gambar_url = 'uploads/' . $nama_acak; // Relative path to store in the database
             // Masukkan ke database
             $sql = "INSERT INTO produk (nama, deskripsi, harga, gambar_url, kategori) VALUES (:nama, :deskripsi, :harga, :gambar_url, :kategori)";
             $stmt = $pdo->prepare($sql);
@@ -145,13 +145,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <label for="kategori" class="form-label">Kategori</label>
                         <select class="form-control" id="kategori" name="kategori" required>
                             <option value="">Pilih Kategori</option>
-                            <option value="Kategori1">Vape Pens</option>
-                            <option value="Kategori2">Mods dan Advanced Kits</option>
-                            <option value="Kategori3">E-Liquid atau E-Juice</option>
-                            <option value="Kategori4">Aksesoris</option>
-                            <option value="Kategori5">Pod Mods</option>
-                            <option value="Kategori6">CBD Vape Products</option>
-                            <option value="Kategori7">Spare Parts</option>
+                            <option value="Vape Pens">Vape Pens</option>
+                            <option value="Mods dan Advanced Kits">Mods dan Advanced Kits</option>
+                            <option value="E-Liquid atau E-Juice">E-Liquid atau E-Juice</option>
+                            <option value="Aksesoris">Aksesoris</option>
+                            <option value="Pod Mods">Pod Mods</option>
+                            <option value="CBD Vape Products">CBD Vape Products</option>
+                            <option value="Spare Parts">Spare Parts</option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Tambah Produk</button>

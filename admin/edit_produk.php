@@ -25,7 +25,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
     $description = $_POST['description'];
     $price = $_POST['price'];
-    $category = $_POST['category'];
+    $category = $_POST['kategori']; // Pastikan nama field sesuai dengan yang ada di form
+
+    // Debugging: cetak nilai yang diterima dari form
+    // echo "Name: $name, Description: $description, Price: $price, Category: $category";
 
     // Upload file gambar baru jika ada
     if ($_FILES['image']['size'] > 0) {
@@ -74,7 +77,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Update data produk ke database
     $sql_update = "UPDATE produk SET nama = :name, deskripsi = :description, harga = :price, gambar_url = :image_url, kategori = :category WHERE id = :id";
     $stmt_update = $pdo->prepare($sql_update);
-    $stmt_update->execute(['name' => $name, 'description' => $description, 'price' => $price, 'image_url' => $image_url, 'category' => $category, 'id' => $id]);
+    $stmt_update->execute([
+        'name' => $name, 
+        'description' => $description, 
+        'price' => $price, 
+        'image_url' => $image_url, 
+        'category' => $category, 
+        'id' => $id
+    ]);
 
     echo "<script>alert('Produk berhasil diperbarui!'); window.location.href='kelola_produk.php';</script>";
 }
@@ -172,8 +182,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <img src="../<?php echo htmlspecialchars($product['gambar_url']); ?>" class="mt-2 card-img-top" alt="<?php echo htmlspecialchars($product['nama']); ?>">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="category" class="form-label">Kategori</label>
-                                    <input type="text" class="form-control" id="category" name="category" value="<?php echo htmlspecialchars($product['kategori']); ?>" required>
+                                    <label for="kategori" class="form-label">Kategori</label>
+                                    <select class="form-control" id="kategori" name="kategori" required>
+                                        <option value="">Pilih Kategori</option>
+                                        <option value="Vape Pens" <?php if ($product['kategori'] == "Vape Pens") echo 'selected'; ?>>Vape Pens</option>
+                                        <option value="Mods dan Advanced Kits" <?php if ($product['kategori'] == "Mods dan Advanced Kits") echo 'selected'; ?>>Mods dan Advanced Kits</option>
+                                        <option value="E-Liquid atau E-Juice" <?php if ($product['kategori'] == "E-Liquid atau E-Juice") echo 'selected'; ?>>E-Liquid atau E-Juice</option>
+                                        <option value="Aksesoris" <?php if ($product['kategori'] == "Aksesoris") echo 'selected'; ?>>Aksesoris</option>
+                                        <option value="Pod Mods" <?php if ($product['kategori'] == "Pod Mods") echo 'selected'; ?>>Pod Mods</option>
+                                        <option value="CBD Vape Products" <?php if ($product['kategori'] == "CBD Vape Products") echo 'selected'; ?>>CBD Vape Products</option>
+                                        <option value="Spare Parts" <?php if ($product['kategori'] == "Spare Parts") echo 'selected'; ?>>Spare Parts</option>
+                                    </select>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Perbarui Produk</button>
                             </form>

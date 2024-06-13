@@ -42,11 +42,10 @@ function formatRupiah($angka){
             padding: 100px 20px;
         }
         .hero h1 {
-            font-size: 64px;
+            font-size: 4rem;
         }
-
         .hero p {
-            font-size: 24px;
+            font-size: 1.5rem;
         }
     </style>
 </head>

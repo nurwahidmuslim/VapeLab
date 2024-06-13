@@ -64,12 +64,12 @@ if (!isset($_SESSION['user_id'])) {
     </script>
 
     <!-- Bagian Produk -->
-    <section class="produk py-5 mt-5">
+    <section id="produk" class="produk py-5 mt-5">
         <div class="container">
-            <h2 class="text-center mb-5">Semua Produk Kami</h2>
+            <h2 class="text-center mb-5">Produk Kami</h2>
             <div class="row">
                 <?php
-                $sql = 'SELECT * FROM produk';
+                $sql = 'SELECT * FROM produk LIMIT 3';
                 $stmt = $pdo->query($sql);
 
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -78,17 +78,16 @@ if (!isset($_SESSION['user_id'])) {
                     echo '      <img src="' . htmlspecialchars($row['gambar_url']) . '" class="card-img-top" alt="' . htmlspecialchars($row['nama']) . '">';
                     echo '      <div class="card-body d-flex flex-column">';
                     echo '          <h5 class="card-title">' . htmlspecialchars($row['nama']) . '</h5>';
-                    echo '          <p class="card-text">' . htmlspecialchars($row['deskripsi']) . '</p>';
                     echo '          <p class="card-text mt-auto fw-bold">Rp ' . number_format($row['harga'], 0, ',', '.') . '</p>';
-                    echo '          <form method="POST" action="tambah_keranjang.php">';
-                    echo '              <input type="hidden" name="id_produk" value="' . htmlspecialchars($row['id']) . '">';
-                    echo '              <button type="submit" class="btn btn-primary w-100 mt-auto">Tambah ke Keranjang</button>';
-                    echo '          </form>';
+                    echo '          <a href="detail_produk.php?id=' . htmlspecialchars($row['id']) . '" class="btn btn-primary w-100 mt-auto">Detail</a>';
                     echo '      </div>';
                     echo '  </div>';
                     echo '</div>';
                 }
                 ?>
+            </div>
+            <div class="text-center mt-4">
+                <a href="produk.php" class="btn btn-secondary btn-lg">Lihat Semua Produk</a>
             </div>
         </div>
     </section>
