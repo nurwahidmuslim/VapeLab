@@ -42,10 +42,11 @@ function formatRupiah($angka){
             padding: 100px 20px;
         }
         .hero h1 {
-            font-size: 4rem;
+            font-size: 64px;
         }
+
         .hero p {
-            font-size: 1.5rem;
+            font-size: 24px;
         }
     </style>
 </head>
@@ -115,7 +116,7 @@ function formatRupiah($angka){
                             echo '      <form method="POST" action="update_cart.php">';
                             echo '          <input type="hidden" name="cart_id" value="' . htmlspecialchars($item['id']) . '">';
                             echo '          <div class="input-group">';
-                            echo '              <input type="number" class="form-control form-control-sm" name="quantity" value="' . htmlspecialchars($item['kuantitas']) . '" min="1" onchange="this.form.submit()">';
+                            echo '              <input type="number" class="form-control form-control-sm" name="kuantitas" value="' . htmlspecialchars($item['kuantitas']) . '" min="1" onchange="this.form.submit()">';
                             echo '          </div>';
                             echo '      </form>';
                             echo '  </td>';

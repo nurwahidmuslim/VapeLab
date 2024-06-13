@@ -1,5 +1,5 @@
 <?php
-include 'config.php';
+include '../config.php';
 
 // Ambil data produk dari database
 $sql = "SELECT * FROM produk";
@@ -91,7 +91,7 @@ if (isset($_GET['delete_id'])) {
             <?php foreach ($products as $product) : ?>
                 <div class="col-md-4 mb-3">
                     <div class="card">
-                        <img src="<?php echo htmlspecialchars($product['gambar_url']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($product['nama']); ?>">
+                        <img src="../<?php echo htmlspecialchars($product['gambar_url']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($product['nama']); ?>">
                         <div class="card-body">
                             <h5 class="card-title"><?php echo htmlspecialchars($product['nama']); ?></h5>
                             <p class="card-text"><?php echo htmlspecialchars($product['deskripsi']); ?></p>

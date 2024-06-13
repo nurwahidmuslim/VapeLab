@@ -1,6 +1,6 @@
 <?php
 $host = 'localhost';  // Host database
-$db = 'uasweb';      // Nama database
+$db = 'vapelab';      // Nama database
 $user = 'root';       // User database
 $pass = '';           // Password database
 

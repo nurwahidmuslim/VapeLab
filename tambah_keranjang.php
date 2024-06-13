@@ -5,7 +5,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id_produk'])) {
     $product_id = $_POST['id_produk'];
 
     // Periksa apakah produk sudah ada di keranjang
-    $stmt_check = $pdo->prepare("SELECT * FROM cart WHERE id_produk = :id_produk");
+    $stmt_check = $pdo->prepare("SELECT * FROM keranjang WHERE id_produk = :id_produk");
     $stmt_check->execute(['id_produk' => $product_id]);
     $existing_product = $stmt_check->fetch(PDO::FETCH_ASSOC);
 

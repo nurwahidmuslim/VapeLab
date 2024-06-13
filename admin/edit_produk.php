@@ -1,5 +1,5 @@
 <?php
-include 'config.php';
+include '../config.php';
 
 // Periksa apakah ID produk disertakan dalam URL
 if (!isset($_GET['id'])) {
@@ -68,11 +68,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     } else {
         // Jika tidak ada gambar yang diupload, gunakan gambar yang sudah ada
-        $image_url = $product['image_url'];
+        $image_url = $product['gambar_url'];
     }
 
     // Update data produk ke database
-    $sql_update = "UPDATE produk SET nama = :name, deskripsi = :description, harga = :price, image_url = :image_url, kategori = :category WHERE id = :id";
+    $sql_update = "UPDATE produk SET nama = :name, deskripsi = :description, harga = :price, gambar_url = :image_url, kategori = :category WHERE id = :id";
     $stmt_update = $pdo->prepare($sql_update);
     $stmt_update->execute(['name' => $name, 'description' => $description, 'price' => $price, 'image_url' => $image_url, 'category' => $category, 'id' => $id]);
 
@@ -169,7 +169,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="mb-3">
                                     <label for="image" class="form-label">Gambar Produk</label>
                                     <input type="file" class="form-control" id="image" name="image">
-                                    <img src="<?php echo htmlspecialchars($product['gambar_url']); ?>" class="mt-2 card-img-top" alt="<?php echo htmlspecialchars($product['nama']); ?>">
+                                    <img src="../<?php echo htmlspecialchars($product['gambar_url']); ?>" class="mt-2 card-img-top" alt="<?php echo htmlspecialchars($product['nama']); ?>">
                                 </div>
                                 <div class="mb-3">
                                     <label for="category" class="form-label">Kategori</label>
