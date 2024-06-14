@@ -80,8 +80,6 @@ if (isset($_GET['delete_id'])) {
         <a href="kelola_produk.php" class="active">Kelola Produk</a>
         <a href="pesanan.php">Pesanan</a>
         <a href="pelanggan.php">Pelanggan</a>
-        <a href="pengaturan.php">Pengaturan</a>
-        <a href="javascript:void(0);" onclick="konfirmasiLogout()">Logout</a>
     </div>
 
     <!-- Konten Utama -->

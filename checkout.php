@@ -1,31 +1,42 @@
 <?php
+session_start();
 include 'config.php';
 
-// Ambil produk yang ada di keranjang
+// Assuming the user is logged in and their user ID is stored in the session
+$user_id = $_SESSION['user_id'];
+
+// Fetch user details from the database
+$stmt = $pdo->prepare("SELECT * FROM users WHERE id = :user_id");
+$stmt->execute(['user_id' => $user_id]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Fetch products in the cart
 $stmt = $pdo->query("SELECT keranjang.*, produk.nama, produk.harga, produk.gambar_url FROM keranjang JOIN produk ON keranjang.id_produk = produk.id");
 $cart_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Hitung total harga
+// Calculate total price
 $total_price = 0;
 foreach ($cart_items as $item) {
     $total_price += $item['harga'] * $item['kuantitas'];
 }
 
-// Proses checkout
+// Process checkout
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $user_id = $_SESSION['user_id'];
     $name = $_POST['name'];
-    $email = $_POST['email'];
+    $phone = $_POST['phone'];
     $address = $_POST['address'];
     $city = $_POST['city'];
     $state = $_POST['state'];
     $zip = $_POST['zip'];
     $total_price = $_POST['total_price'];
 
-    // Simpan informasi pesanan
-    $stmt = $pdo->prepare("INSERT INTO orders (name, email, address, city, state, zip, total_price) VALUES (:name, :email, :address, :city, :state, :zip, :total_price)");
+    // Save order information
+    $stmt = $pdo->prepare("INSERT INTO orders (user_id, nama, no_telp, alamat, kota, prov, kode_pos, total) VALUES (:user_id, :name, :phone, :address, :city, :state, :zip, :total_price)");
     $stmt->execute([
+        'user_id' => $user_id,
         'name' => $name,
-        'email' => $email,
+        'phone' => $phone,
         'address' => $address,
         'city' => $city,
         'state' => $state,
@@ -33,13 +44,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         'total_price' => $total_price
     ]);
 
-    // Kosongkan keranjang
+    // Clear the cart
     $pdo->query("DELETE FROM keranjang");
 
     echo "<script>alert('Pesanan berhasil diproses!'); window.location.href='index.php';</script>";
 }
 
-// Fungsi untuk mengonversi angka ke format Rupiah
+// Function to convert numbers to Rupiah format
 function formatRupiah($angka){
     return 'Rp' . number_format($angka, 0, ',', '.');
 }
@@ -75,32 +86,7 @@ function formatRupiah($angka){
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="index.php">VapeLab</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php">Beranda</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php#products">Produk</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="cart.php">
-                            <i class="bi bi-cart"></i> Keranjang
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Bagian Checkout -->
+    <!-- Checkout Section -->
     <section class="py-5">
         <div class="container">
             <h2 class="text-center mb-5">Checkout</h2>
@@ -129,12 +115,12 @@ function formatRupiah($angka){
                             <input type="text" class="form-control" id="name" name="name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
+                            <label for="phone" class="form-label">Nomor Telepon</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" value="<?php echo htmlspecialchars($user['no_telp']); ?>" required>
                         </div>
                         <div class="mb-3">
                             <label for="address" class="form-label">Alamat</label>
-                            <input type="text" class="form-control" id="address" name="address" required>
+                            <textarea class="form-control" id="address" name="address" rows="3" required><?php echo htmlspecialchars($user['alamat']); ?></textarea>
                         </div>
                         <div class="mb-3">
                             <label for="state" class="form-label">Provinsi</label>

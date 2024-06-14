@@ -96,6 +96,9 @@ if (!isset($_SESSION['user_id'])) {
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="riwayat.php">Riwayat</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="profil.php">Profil</a>
                     </li>
                     <li class="nav-item">

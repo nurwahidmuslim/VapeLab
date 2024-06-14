@@ -2,19 +2,23 @@
 session_start();
 include 'config.php';
 
+// Redirect to the home page if the user is already logged in
 if (isset($_SESSION['user_id'])) {
     header("Location: index.php");
     exit;
 }
 
+// Process the login form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
+    // Fetch user data from the database
     $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username");
     $stmt->execute(['username' => $username]);
     $user = $stmt->fetch();
 
+    // Verify the password
     if ($user && password_verify($password, $user['password'])) {
         $_SESSION['user_id'] = $user['id'];
         header("Location: index.php");
@@ -35,6 +39,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <style>
         body {
             background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
         .container {
             max-width: 500px;
@@ -46,6 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .form-title {
             font-weight: bold;
             color: #495057;
+            text-align: center;
         }
         .form-label {
             font-weight: bold;
@@ -57,14 +67,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h1 class="text-center mb-4 form-title">Masuk</h1>
-        <?php
-        if (isset($error_message)) {
-            echo '<div class="alert alert-danger" role="alert">' . $error_message . '</div>';
-        }
-        ?>
-        <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+    <div class="container">
+        <h1 class="form-title mb-4">Masuk</h1>
+        <?php if (isset($error_message)): ?>
+            <div class="alert alert-danger" role="alert">
+                <?php echo $error_message; ?>
+            </div>
+        <?php endif; ?>
+        <form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
                 <input type="text" class="form-control" id="username" name="username" required>

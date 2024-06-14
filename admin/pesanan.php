@@ -22,7 +22,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     exit;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -34,37 +33,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .container {
             max-width: 800px;
             margin-top: 50px;
+            margin-left: 350px;
         }
-        .btn-back {
-            margin-top: 20px;
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 250px;
+            padding-top: 3rem;
+            background-color: #343a40;
+            color: #fff;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 10px 15px;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .sidebar a:hover {
+            background-color: #495057;
         }
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="index.php">VapeLab</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php">Beranda</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php#products">Produk</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="cart.php">
-                            <i class="bi bi-cart"></i> Keranjang
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2 class="text-center mb-4">Dashboard Admin</h2>
+        <a href="dashboard.php">Dashboard</a>
+        <a href="tambah_produk.php">Tambah Produk</a>
+        <a href="kelola_produk.php" class="active">Kelola Produk</a>
+        <a href="pesanan.php">Pesanan</a>
+        <a href="pelanggan.php">Pelanggan</a>
+    </div>
 
     <!-- Konten Kelola Pesanan -->
     <div class="container">
@@ -76,10 +79,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Nama</th>
-                            <th scope="col">Email</th>
+                            <th scope="col">No Telp</th>
                             <th scope="col">Total Harga</th>
                             <th scope="col">Status</th>
                             <th scope="col">Tanggal Pesan</th>
+                            <th scope="col">Bukti Pembayaran</th>
                             <th scope="col">Aksi</th>
                         </tr>
                     </thead>
@@ -87,19 +91,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <?php foreach ($orders as $index => $order): ?>
                             <tr>
                                 <th scope="row"><?php echo $index + 1; ?></th>
-                                <td><?php echo htmlspecialchars($order['name']); ?></td>
-                                <td><?php echo htmlspecialchars($order['email']); ?></td>
-                                <td><?php echo 'Rp' . number_format($order['total_price'], 0, ',', '.'); ?></td>
+                                <td><?php echo htmlspecialchars($order['nama']); ?></td>
+                                <td><?php echo htmlspecialchars($order['no_telp']); ?></td>
+                                <td><?php echo 'Rp' . number_format($order['total'], 0, ',', '.'); ?></td>
                                 <td><?php echo htmlspecialchars($order['status']); ?></td>
                                 <td><?php echo date('d M Y H:i:s', strtotime($order['created_at'])); ?></td>
+                                <td>
+                                    <?php if (!empty($order['bukti'])): ?>
+                                        <a href="../uploads/<?php echo htmlspecialchars($order['bukti']); ?>" target="_blank">Lihat Bukti</a>
+                                    <?php else: ?>
+                                        Tidak ada bukti
+                                    <?php endif; ?>
+                                </td>
                                 <td>
                                     <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                                         <input type="hidden" name="order_id" value="<?php echo $order['id']; ?>">
                                         <div class="input-group">
                                             <select class="form-select" name="new_status">
-                                                <option value="Menunggu Pembayaran" <?php echo ($order['status'] == 'Menunggu Pembayaran') ? 'selected' : ''; ?>>Menunggu Pembayaran</option>
+                                                <option value="Menunggu Konfirmasi" <?php echo ($order['status'] == 'Menunggu Konfirmasi') ? 'selected' : ''; ?>>Menunggu Konfirmasi</option>
                                                 <option value="Diproses" <?php echo ($order['status'] == 'Diproses') ? 'selected' : ''; ?>>Diproses</option>
                                                 <option value="Dikirim" <?php echo ($order['status'] == 'Dikirim') ? 'selected' : ''; ?>>Dikirim</option>
+                                                <option value="Ditolak" <?php echo ($order['status'] == 'Ditolak') ? 'selected' : ''; ?>>Ditolak</option>
                                                 <option value="Selesai" <?php echo ($order['status'] == 'Selesai') ? 'selected' : ''; ?>>Selesai</option>
                                             </select>
                                             <button class="btn btn-primary" type="submit">Simpan</button>
@@ -114,7 +126,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <p>Tidak ada pesanan.</p>
             <?php endif; ?>
         </div>
-        <a href="index.php" class="btn btn-primary btn-back">Kembali ke Beranda</a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>

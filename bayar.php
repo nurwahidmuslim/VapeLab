@@ -3,7 +3,7 @@ include 'config.php';
 
 // Ambil data dari form checkout
 $name = $_POST['name'];
-$email = $_POST['email'];
+$phone = $_POST['phone'];
 $address = $_POST['address'];
 $city = $_POST['city'];
 $state = $_POST['state'];
@@ -46,31 +46,6 @@ function formatRupiah($angka){
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="index.php">VapeLab</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php">Beranda</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php#products">Produk</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="cart.php">
-                            <i class="bi bi-cart"></i> Keranjang
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
     <!-- Bagian Pembayaran -->
     <section class="py-5">
         <div class="container">
@@ -83,7 +58,7 @@ function formatRupiah($angka){
                             <strong>Nama:</strong> <?php echo htmlspecialchars($name); ?>
                         </li>
                         <li class="list-group-item">
-                            <strong>Email:</strong> <?php echo htmlspecialchars($email); ?>
+                            <strong>No Telp:</strong> <?php echo htmlspecialchars($phone); ?>
                         </li>
                         <li class="list-group-item">
                             <strong>Alamat:</strong> <?php echo htmlspecialchars($address); ?>
@@ -118,7 +93,7 @@ function formatRupiah($angka){
                             <input type="file" class="form-control" id="proof_of_payment" name="proof_of_payment" required>
                         </div>
                         <input type="hidden" name="name" value="<?php echo htmlspecialchars($name); ?>">
-                        <input type="hidden" name="email" value="<?php echo htmlspecialchars($email); ?>">
+                        <input type="hidden" name="phone" value="<?php echo htmlspecialchars($phone); ?>">
                         <input type="hidden" name="address" value="<?php echo htmlspecialchars($address); ?>">
                         <input type="hidden" name="city" value="<?php echo htmlspecialchars($city); ?>">
                         <input type="hidden" name="state" value="<?php echo htmlspecialchars($state); ?>">

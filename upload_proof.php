@@ -1,10 +1,13 @@
 <?php
+session_start();
 include 'config.php';
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Ambil data dari form pembayaran
+    $user_id = $_SESSION['user_id'];
     $name = $_POST['name'];
-    $email = $_POST['email'];
+    $phone = $_POST['phone'];
     $address = $_POST['address'];
     $city = $_POST['city'];
     $state = $_POST['state'];
@@ -19,11 +22,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Simpan informasi bukti pembayaran
     if (move_uploaded_file($_FILES['proof_of_payment']['tmp_name'], $upload_file)) {
         // Simpan informasi pembayaran ke database
-        $stmt = $pdo->prepare("INSERT INTO orders (name, email, address, city, state, zip, total_price, proof_of_payment) 
-                                VALUES (:name, :email, :address, :city, :state, :zip, :total_price, :proof_of_payment)");
+        $stmt = $pdo->prepare("INSERT INTO orders (user_id, nama, no_telp, alamat, kota, prov, kode_pos, total, bukti) 
+                                VALUES (:user_id, :name, :phone, :address, :city, :state, :zip, :total_price, :proof_of_payment)");
         $stmt->execute([
+            'user_id' => $user_id,
             'name' => $name,
-            'email' => $email,
+            'phone' => $phone,
             'address' => $address,
             'city' => $city,
             'state' => $state,

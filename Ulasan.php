@@ -1,7 +1,7 @@
 <?php
 $servername = "localhost";
-$username = "root"; // Sesuaikan dengan username MySQL Anda
-$password = ""; // Sesuaikan dengan password MySQL Anda
+$username = "root";
+$password = ""; 
 $dbname = "vapelab";
 
 // Buat koneksi
